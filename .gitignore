@@ -14,7 +14,7 @@ instance/
 .flaskenv
 
 # Firebase Service Account Key (DO NOT UPLOAD THIS TO GITHUB)
-firebase_service_account.json # Or whatever your Firebase JSON file is named
+firebase_service_account.json 
 
 # MacOS
 .DS_Store
