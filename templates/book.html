@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="py-5 mt-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h1 class="display-4 fw-bold section-title"><span>Book Our Services</span></h1>
+            <p class="lead">Tell us about your event, and we'll help you create a perfect culinary experience.</p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8" data-aos="fade-up">
+                <form id="bookingForm" class="needs-validation" novalidate>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="eventType" class="form-label">Event Type <span class="text-danger">*</span></label>
+                            <select class="form-select" id="eventType" name="eventType" required>
+                                <option value="">Choose...</option>
+                                <option value="Wedding">Wedding</option>
+                                <option value="Birthday Party">Birthday Party</option>
+                                <option value="Corporate Event">Corporate Event</option>
+                                <option value="Family Gathering">Family Gathering</option>
+                                <option value="Kitty Party">Kitty Party</option>
+                                <option value="Picnic/Garden Party">Picnic / Garden Party</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="invalid-feedback">Please select an event type.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="eventDate" class="form-label">Event Date <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="eventDate" name="eventDate" required>
+                            <div class="invalid-feedback">Please select an event date.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="numGuests" class="form-label">Number of Guests <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="numGuests" name="numGuests" min="1" required>
+                            <div class="invalid-feedback">Please enter the number of guests.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customerName" class="form-label">Your Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="customerName" name="customerName" required>
+                            <div class="invalid-feedback">Please enter your name.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customerEmail" class="form-label">Your Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="customerEmail" name="customerEmail" required>
+                            <div class="invalid-feedback">Please enter a valid email.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="customerPhone" class="form-label">Your Phone <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="customerPhone" name="customerPhone" pattern="[0-9]{10}" placeholder="e.g., 9876543210" required>
+                            <div class="invalid-feedback">Please enter a 10-digit phone number.</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="specialRequests" class="form-label">Special Requests / Menu Preferences</label>
+                            <textarea class="form-control" id="specialRequests" name="specialRequests" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4 custom-btn-primary">Submit Booking Request</button>
+                </form>
+                <div id="bookingFormMessage" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const bookingForm = document.getElementById('bookingForm');
+    const bookingFormMessage = document.getElementById('bookingFormMessage');
+
+    bookingForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!bookingForm.checkValidity()) {
+            bookingForm.classList.add('was-validated');
+            return;
+        }
+        bookingForm.classList.add('was-validated');
+
+        const formData = new FormData(bookingForm);
+        bookingFormMessage.innerHTML = '<div class="alert alert-info">Sending your booking request...</div>';
+
+        fetch("{{ url_for('book') }}", { // Corrected endpoint here
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                bookingFormMessage.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                bookingForm.reset();
+                bookingForm.classList.remove('was-validated');
+            } else {
+                bookingFormMessage.innerHTML = `<div class="alert alert-danger">${data.message || 'An error occurred.'}</div>`;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            bookingFormMessage.innerHTML = '<div class="alert alert-danger">An error occurred. Please try again.</div>';
+        });
+    });
+});
+</script>
+{% endblock %}

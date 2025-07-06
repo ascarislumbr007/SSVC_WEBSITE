@@ -1,0 +1,105 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="menu-page-title-container mt-4">
+    <div class="container text-center" data-aos="fade-up">
+        <h1 class="display-4 fw-bold"><span>Our Vegetarian Delicacies</span></h1>
+        <p class="lead">Taste the Tradition, See the Grandeur. Click any image for a closer look, or grab our full menu below!</p> {# Updated lead text #}
+    </div>
+</div>
+
+<section class="py-4">
+    <div class="container">
+        {% if menu_sections %}
+            <div class="row justify-content-center">
+                {# Loop through ALL sections in menu_sections #}
+                {% for section in menu_sections %}
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="{{ loop.index0 * 100 }}">
+                    <div class="card h-100 menu-category-card shadow-sm rounded-lg overflow-hidden">
+                        {# Clickable image for modal display #}
+                        <div class="image-modal-trigger" data-bs-toggle="modal" data-bs-target="#imageModal" data-image-src="{{ section.image }}" style="cursor: pointer;">
+                            <img src="{{ section.image }}" class="card-img-top rounded-top-lg" alt="{{ section.name }}">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {# Dedicated "Download Full Menu Card" button #}
+            <div class="text-center mt-5">
+                <a href="{{ url_for('static', filename='Menu.pdf') }}" download="Sri_Sai_Venkateswara_Caterers_Full_Menu.pdf" class="btn btn-lg custom-btn-primary shadow-lg">
+                    <i class="bi bi-download me-2"></i> Download Full Menu Card
+                </a>
+            </div>
+
+            {# Terms & Conditions #}
+            <div class="mt-5 pt-4 border-top" data-aos="fade-up">
+                <h3 class="menu-category-title small" style="border-bottom: none; font-size: 1.5rem;"><i class="bi bi-info-circle-fill me-2"></i> Terms & Conditions</h3>
+                <ul class="list-unstyled terms-list">
+                    {% if terms_and_conditions %}
+                        {% for term in terms_and_conditions %}
+                            <li><i class="bi bi-dot"></i> {{ term }}</li>
+                        {% endfor %}
+                    {% else %}
+                        {# Fallback if terms_and_conditions is not passed or empty #}
+                        <li>Transportation Included</li>
+                        <li>The total package includes disposables, cutlery, serving boys.</li>
+                        <li>Live Preparation Will Be Charged Extra Depending On Items (For Example: Rumali Roti, Puri, Butter Naan, Mirchi Bajji, Bobbatu, Boorelu, etc.)</li>
+                        <li>We deliberately provide extra food at 10%. In case it exceeds the allocated amount, an additional charge per person will apply.</li>
+                        <li>Orders will be confirmed after providing the event date, number of guests, meal preference (lunch/breakfast/dinner), and complete address with landmarks.</li>
+                        <li>The contact person's primary number, along with an alternative number, should be provided in advance.</li>
+                        <li>The host is responsible for arranging tables, tablecloths, dustbins, etc.</li>
+                        <li>At least 25% advance payment is required out of the total agreed amount at the time of confirmation. The remaining balance will be paid after the event.</li>
+                        <li>The above package and terms and conditions apply for a minimum guest size of 100 (not less than 100).</li>
+                        <li>Guest Size Below 100 will have a fixed package – No Bargain</li>
+                    
+                    {% endif %}
+                </ul>
+            </div>
+
+        {% else %}
+        <div class="text-center py-5">
+            <h3 class="text-muted">Menu details are currently being updated. Please check back soon or contact us for custom options!</h3>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+{# Image Modal Structure #}
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl"> {# Increased size for larger image #}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Menu Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" id="modalImage" class="img-fluid rounded" alt="Expanded Menu Image">
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const imageTriggers = document.querySelectorAll('.image-modal-trigger');
+
+    imageTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+            const imageUrl = this.getAttribute('data-image-src');
+            modalImage.src = imageUrl;
+        });
+    });
+
+    // Optional: Clear image src when modal is hidden to save memory
+    imageModal.addEventListener('hidden.bs.modal', function () {
+        modalImage.src = '';
+    });
+});
+</script>
+{% endblock %}

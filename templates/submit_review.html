@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="py-5 mt-5 bg-white"> {# Added mt-5 to push content below fixed navbar #}
+    <div class="container">
+        <h1 class="text-center mb-5 section-title" data-aos="fade-up"><span>Submit Your Review</span></h1>
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <form id="reviewSubmissionForm" class="p-4 border rounded shadow-sm" data-aos="fade-up" data-aos-delay="100">
+                    <div class="mb-3">
+                        <label for="reviewAuthor" class="form-label fw-semibold">Your Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="reviewAuthor" name="author" placeholder="e.g., Jane Doe" required>
+                        <div class="form-text">How would you like your name to appear with the review?</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="reviewQuote" class="form-label fw-semibold">Your Review <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="reviewQuote" name="quote" rows="5" placeholder="Share your experience with us..." required></textarea>
+                        <div class="form-text">Tell us what you loved about our services!</div>
+                    </div>
+                    <div class="mb-4"> {# mb-4 for more space below rating #}
+                        <label for="reviewRating" class="form-label fw-semibold">Rating</label>
+                        <select class="form-select" id="reviewRating" name="rating">
+                            <option value="">Select your star rating</option>
+                            <option value="5">★★★★★ Excellent</option>
+                            <option value="4">★★★★☆ Very Good</option>
+                            <option value="3">★★★☆☆ Good</option>
+                            <option value="2">★★☆☆☆ Fair</option>
+                            <option value="1">★☆☆☆☆ Poor</option> 
+                        </select>
+                        <div class="form-text">Your honest rating helps us improve.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary custom-btn-primary w-100">Submit Review</button>
+                    <div id="reviewMessage" class="mt-3 text-center">
+                        {# Messages from AJAX submission will appear here #}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const reviewForm = document.getElementById('reviewSubmissionForm');
+        const reviewMessageDiv = document.getElementById('reviewMessage');
+
+        if (reviewForm) {
+            reviewForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(reviewForm);
+
+                // Clear previous messages
+                reviewMessageDiv.textContent = '';
+                reviewMessageDiv.className = 'mt-3 text-center'; // Reset classes
+
+                fetch('{{ url_for("submit_review") }}', { // Use url_for for the Flask endpoint
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        // Handle HTTP errors
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        reviewMessageDiv.className = 'mt-3 text-center alert alert-success';
+                        reviewForm.reset(); // Clear the form on success
+                    } else {
+                        reviewMessageDiv.className = 'mt-3 text-center alert alert-danger';
+                    }
+                    reviewMessageDiv.textContent = data.message;
+                })
+                .catch(error => {
+                    console.error('Error submitting review:', error);
+                    reviewMessageDiv.className = 'mt-3 text-center alert alert-danger';
+                    reviewMessageDiv.textContent = 'An unexpected error occurred. Please try again.';
+                });
+            });
+        }
+    });
+</script>
+{% endblock %}

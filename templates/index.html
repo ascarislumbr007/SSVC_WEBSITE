@@ -1,0 +1,152 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="hero-section text-white d-flex align-items-center position-relative">
+    <div class="hero-overlay"></div> {# Overlay for better text readability #}
+
+    {# Poola Thoranam SVG - Single container for both sides #}
+    <svg class="garland-full-width" viewBox="0 0 1000 200" preserveAspectRatio="xMidYMin slice">
+        <defs>
+            <radialGradient id="lightGradient" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                <stop offset="0%" stop-color="white" />
+                <stop offset="70%" stop-color="var(--accent-color-yellow)" />
+                <stop offset="100%" stop-color="transparent" />
+            </radialGradient>
+        </defs>
+
+        {# Left Top String #}
+        <path class="garland-line" d="M0,50 C150,120 350,120 500,50" />
+        {# Bulbs for Left Top String #}
+        <circle class="garland-light" cx="100" cy="90" r="10" />
+        <circle class="garland-light" cx="200" cy="110" r="10" />
+        <circle class="garland-light" cx="300" cy="110" r="10" />
+        <circle class="garland-light" cx="400" cy="90" r="10" />
+
+        {# Left Bottom String #}
+        <path class="garland-line" d="M0,70 C150,140 350,140 500,70" />
+        {# Bulbs for Left Bottom String #}
+        <circle class="garland-light" cx="120" cy="110" r="10" />
+        <circle class="garland-light" cx="220" cy="130" r="10" />
+        <circle class="garland-light" cx="320" cy="130" r="10" />
+        <circle class="garland-light" cx="420" cy="110" r="10" />
+
+        {# Right Top String #}
+        <path class="garland-line" d="M1000,50 C850,120 650,120 500,50" />
+        {# Bulbs for Right Top String #}
+        <circle class="garland-light" cx="900" cy="90" r="10" />
+        <circle class="garland-light" cx="800" cy="110" r="10" />
+        <circle class="garland-light" cx="700" cy="110" r="10" />
+        <circle class="garland-light" cx="600" cy="90" r="10" />
+
+        {# Right Bottom String #}
+        <path class="garland-line" d="M1000,70 C850,140 650,140 500,70" />
+        {# Bulbs for Right Bottom String #}
+        <circle class="garland-light" cx="880" cy="110" r="10" />
+        <circle class="garland-light" cx="780" cy="130" r="10" />
+        <circle class="garland-light" cx="680" cy="130" r="10" />
+        <circle class="garland-light" cx="580" cy="110" r="10" />
+    </svg>
+
+    <div class="container text-center z-index-1" data-aos="fade-up"> {# z-index to keep content above overlay #}
+        <h1 class="display-2 fw-bold animate__animated animate__fadeInDown">Sri Sai Venkateswara Caterers</h1>
+        <p class="lead my-4 animate__animated animate__fadeInUp animate__delay-1s">Experience Culinary Excellence for Every Occasion</p>
+        <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+            <a href="{{ url_for('menu_page') }}" class="btn btn-lg custom-btn-primary-outline-hero">View Our Menu</a>
+            <a href="{{ url_for('book') }}" class="btn btn-lg custom-btn-secondary-hero">Book Now</a>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-white">
+    <div class="container">
+        <h2 class="text-center mb-5 section-title" data-aos="fade-up"><span>Our Specialties</span></h2>
+        <div class="row text-center">
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card h-100 specialty-card border-0 shadow-lg rounded-3">
+                    {# IMPORTANT: Replace with actual high-quality food image for Specialty 1 #}
+                    <img src="{{ url_for('static', filename='images/food1.jpg') }}" class="card-img-top rounded-top-3" alt="Delicious Starters">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-primary">Delicious Starters</h5>
+                        <p class="card-text text-muted">A delightful array of appetizers to ignite your taste buds and set the perfect tone.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card h-100 specialty-card border-0 shadow-lg rounded-3">
+                     {# IMPORTANT: Replace with actual high-quality food image for Specialty 2 #}
+                     <img src="{{ url_for('static', filename='images/food2.jpg') }}" class="card-img-top rounded-top-3" alt="Authentic Main Courses">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-primary">Authentic Main Courses</h5>
+                        <p class="card-text text-muted">Experience traditional recipes prepared with fresh, locally sourced ingredients.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card h-100 specialty-card border-0 shadow-lg rounded-3">
+                     {# IMPORTANT: Replace with actual high-quality food image for Specialty 3 #}
+                     <img src="{{ url_for('static', filename='images/food3.jpg') }}" class="card-img-top rounded-top-3" alt="Exquisite Desserts">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-primary">Exquisite Desserts</h5>
+                        <p class="card-text text-muted">Conclude your celebration with our decadent range of mouth-watering sweet treats.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section py-5 text-white text-center" data-aos="fade-in">
+    <div class="container">
+        <h2 class="mb-4 display-4 fw-bold animate__animated animate__fadeIn">Planning an Event? Let Us Cater to Perfection.</h2>
+        <p class="lead mb-4 animate__animated animate__fadeIn animate__delay-1s">From intimate gatherings to grand celebrations, we ensure a seamless and delicious experience.</p>
+        <a href="{{ url_for('contact') }}" class="btn btn-lg custom-btn-cta animate__animated animate__zoomIn animate__delay-2s">Get a Quote Today</a>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5 section-title" data-aos="fade-up"><span>What Our Clients Say</span></h2>
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-aos="fade-up">
+            <div class="carousel-indicators">
+                {# Loop to create carousel indicators dynamically #}
+                {% for i in range(num_testimonials) %}
+                <button type="button" data-bs-target="#testimonialCarousel" data-bs-slide-to="{{ i }}" class="{{ 'active' if loop.first else '' }}" aria-label="Slide {{ i + 1 }}"></button>
+                {% endfor %}
+            </div>
+            <div class="carousel-inner">
+                {# Loop to create carousel items dynamically #}
+                {% for review in testimonials %} {# Using 'review' as loop variable name for clarity #}
+                <div class="carousel-item {{ 'active' if loop.first else '' }}">
+                    <div class="testimonial-item text-center p-4 bg-white rounded-3 shadow-sm">
+                        <p class="fs-5 fst-italic text-dark">"{{ review.quote }}"</p>
+                        <h5 class="mt-3 text-primary">- {{ review.author }}</h5>
+                        {# Optional: If you added a rating field in Firestore and want to display stars #}
+                        {# {% if review.rating %}
+                            <div class="text-warning">
+                                {% for _ in range(review.rating) %}<i class="bi bi-star-fill"></i>{% endfor %}
+                                {% for _ in range(5 - review.rating) %}<i class="bi bi-star"></i>{% endfor %}
+                            </div>
+                        {% endif %} #}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+        {# NEW: Add a button to write a review below the carousel #}
+        <div class="text-center mt-5" data-aos="fade-up">
+            <h3 class="mb-3 fw-bold">Had a great experience?</h3>
+            <p class="lead mb-4 text-muted">We'd love to hear your feedback and feature your review!</p>
+            <a href="{{ url_for('submit_review') }}" class="btn btn-lg custom-btn-secondary">Write a Review</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

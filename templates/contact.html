@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="py-5 mt-5">
+    <div class="container">
+        <div class="text-center mb-5" data-aos="fade-up">
+            <h1 class="display-4 fw-bold section-title"><span>Get In Touch</span></h1>
+            <p class="lead">We'd love to hear from you! Whether it's for a booking enquiry or just to say hello.</p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-7 mb-4 mb-lg-0" data-aos="fade-right">
+                <h3 class="mb-4">Send us a Message</h3>
+                <form id="contactForm" class="needs-validation" novalidate>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="contact_name" class="form-label">Your Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="contact_name" name="name" required>
+                            <div class="invalid-feedback">Please enter your name.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contact_email" class="form-label">Your Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="contact_email" name="email" required>
+                            <div class="invalid-feedback">Please enter a valid email.</div>
+                        </div>
+                        <div class="col-12">
+                            <label for="contact_subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="contact_subject" name="subject">
+                        </div>
+                        <div class="col-12">
+                            <label for="contact_message" class="form-label">Message <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="contact_message" name="message" rows="5" required></textarea>
+                            <div class="invalid-feedback">Please enter your message.</div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4 custom-btn-primary">Send Message</button>
+                </form>
+                <div id="contactFormMessage" class="mt-3"></div>
+            </div>
+
+            <div class="col-lg-5" data-aos="fade-left" data-aos-delay="100">
+                <h3 class="mb-4">Contact Information</h3>
+                <div class="contact-info-item mb-3">
+                    <h5><i class="bi bi-geo-alt-fill text-primary me-2"></i>Address</h5>
+                    <p>127, TRT Colony Rd, Sri Rayapatnam, Seethaphalmandi, Padmarao Nagar, Secunderabad, Telangana 500061.</p>
+                </div>
+                <div class="contact-info-item mb-3">
+                    <h5><i class="bi bi-telephone-fill text-primary me-2"></i>Phone</h5>
+                    <p><a href="tel:+917702016555">+91 7702016555</a> (Primary)<br>
+                       <a href="tel:+919398722748">+91 9398722748</a> (Secondary)</p>
+                </div>
+                <div class="contact-info-item mb-3">
+                    <h5><i class="bi bi-envelope-fill text-primary me-2"></i>Email</h5>
+                    <p><a href="mailto:info@srisairamcaterers.com">klalitha1968@gmail.com</a></p>
+                </div>
+                <div class="contact-info-item">
+                    <h5><i class="bi bi-clock-fill text-primary me-2"></i>Business Hours</h5>
+                    <p>Monday - Saturday: 7:00 AM - 9:00 PM<br>
+                       Sunday: 8:00 AM - 10:00 PM</p>
+                </div>
+                <div class="mt-4">
+                  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d928.6687522173098!2d78.51668053534715!3d17.425791428373206!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb9981146901e1%3A0x7f6493efe4f80023!2s127%2C%20TRT%20Colony%20Rd%2C%20Sri%20Rayapatnam%2C%20Seethaphalmandi%2C%20Padmarao%20Nagar%2C%20Secunderabad%2C%20Telangana%20500061!5e0!3m2!1sen!2sin!4v1746623332154!5m2!1sen!2sin" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                     </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts_extra %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const contactForm = document.getElementById('contactForm');
+    const contactFormMessage = document.getElementById('contactFormMessage');
+
+    contactForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!contactForm.checkValidity()) {
+            contactForm.classList.add('was-validated');
+            return;
+        }
+        contactForm.classList.add('was-validated');
+
+        const formData = new FormData(contactForm);
+        contactFormMessage.innerHTML = '<div class="alert alert-info">Sending your message...</div>';
+
+        // CORRECTED LINE BELOW
+        fetch("{{ url_for('contact') }}", {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                contactFormMessage.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                contactForm.reset();
+                contactForm.classList.remove('was-validated');
+            } else {
+                contactFormMessage.innerHTML = `<div class="alert alert-danger">${data.message || 'An error occurred.'}</div>`;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            contactFormMessage.innerHTML = '<div class="alert alert-danger">An error occurred. Please try again.</div>';
+        });
+    });
+});
+</script>
+{% endblock %}

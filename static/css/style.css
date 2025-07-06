@@ -1,0 +1,795 @@
+/* static/css/style.css */
+
+/* Refined Vibrant Color Palette Variables */
+:root {
+  --primary-color: #8B0000;         /* Deep Burgundy / Wine Red */
+  --primary-color-light: #B22222;    /* Firebrick (lighter for gradients) */
+  --primary-color-darker: #6A0000;     /* Darker Burgundy */
+  --primary-color-rgb: 139, 0, 0;    /* RGB for #8B0000 */
+
+  --secondary-color: #FF7F50;         /* Coral / Peach (soft, warm contrast) */
+  --secondary-color-darker: #FF6347;     /* Tomato (darker coral) */
+
+  --accent-color-yellow: #FFD700;     /* Bright Golden Yellow */
+  --accent-color-green: #3CB371;      /* Medium Sea Green (for success/valid states) */
+  --accent-color-red: #DC143C;        /* Crimson (for errors/danger) */
+
+  --text-dark: #333333;             /* Dark Charcoal for readability */
+  --text-light: #F8F8F8;            /* Very light off-white */
+
+  --bg-light: #FFFFFF;              /* Pure white for clean sections */
+  --bg-section-alt: #FFF5EE;        /* Seashell (very light warm background for alternating sections) */
+  --bg-dark: #2F4F4F;               /* Dark Slate Gray for footer/strong contrast */
+
+  --font-primary: 'Poppins', sans-serif;
+  --font-headings: 'Playfair Display', serif;
+  --card-hover-shadow: 0 0.8rem 1.5rem rgba(0, 0, 0, 0.18);
+}
+
+body {
+  font-family: var(--font-primary);
+  color: var(--text-dark);
+  line-height: 1.6;
+  background-color: var(--bg-light); /* Ensuring light background for the body */
+  padding-top: 70px; /* Adjust if navbar height changes */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scroll from AOS */
+}
+
+main {
+  flex-grow: 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headings);
+  font-weight: 700;
+  color: var(--text-dark); /* Default heading color */
+}
+
+/* Navbar */
+.navbar {
+  background-color: #ffffff !important; /* White background for navbar */
+  transition: background-color 0.3s ease-in-out;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08) !important; /* Softer shadow */
+}
+
+.navbar-brand {
+  font-weight: 700;
+  color: var(--primary-color) !important; /* Navbar brand color */
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand img {
+  margin-right: 8px;
+  border-radius: 5px; /* Slightly rounded logo */
+}
+
+.nav-link {
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease, transform 0.3s ease;
+  position: relative;
+  color: var(--text-dark) !important; /* Standard nav link color */
+  padding: 0.8rem 1rem !important;
+}
+
+.nav-link:hover {
+    color: var(--primary-color) !important;
+    transform: translateY(-2px);
+}
+
+.nav-link.active {
+    color: var(--primary-color) !important;
+    font-weight: 600;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25px;
+    height: 3px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+}
+
+/* Hero Section */
+.hero-section {
+    min-height: 80vh; /* Make it taller */
+    background: var(--primary-color-darker) url('../images/hero_bg.jpg') no-repeat center center/cover; /* Fallback color + Dynamic background image */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7); /* Stronger text shadow */
+    padding-top: 100px; /* Adjust for fixed navbar */
+    overflow: hidden; /* Crucial for containing SVG elements that might animate outside bounds */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Darker overlay */
+    z-index: 0;
+}
+
+.hero-section h1 {
+    font-size: 4.5rem; /* Larger hero title */
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: white; /* Ensure text is white */
+    position: relative; /* Needed for z-index and relative positioning */
+    z-index: 1; /* Keep text above overlay and garlands */
+}
+
+.hero-section .lead {
+    font-size: 1.75rem; /* Larger lead text */
+    font-weight: 400;
+    margin-bottom: 40px;
+    color: rgba(255, 255, 255, 0.9);
+    position: relative; /* Ensure lead text is also above overlay */
+    z-index: 1;
+}
+
+/* Poola Thoranam SVG Styling */
+.garland-full-width {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the hero section */
+    height: 200px; /* Height of the SVG container */
+    z-index: 1; /* Above overlay, below text content */
+    pointer-events: none; /* Allows clicks to pass through */
+    overflow: visible; /* Allow elements to extend beyond viewBox if needed for animation */
+    /* Removed initial slide-in animation as it's not needed for a full-width static SVG */
+    animation: sway 5s ease-in-out infinite alternate; /* Subtle sway animation */
+}
+
+.garland-line {
+    fill: none;
+    stroke: var(--primary-color-light); /* Lighter primary color for the string */
+    stroke-width: 3;
+    stroke-dasharray: 1000; /* Large value to cover path length */
+    stroke-dashoffset: 1000; /* Start hidden */
+    animation: drawLine 3s ease-out forwards; /* Increased duration to 3s */
+    animation-delay: 0.5s; /* Delay line drawing */
+}
+
+.garland-light {
+    fill: url(#lightGradient); /* Use the single gradient for all lights */
+    opacity: 0;
+    transform-origin: center center;
+    animation: lightOn 0.3s ease-out forwards; /* Individual light-on animation */
+    filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.9)); /* More pronounced glow effect */
+    stroke: var(--primary-color); /* Darker outline for the bulb */
+    stroke-width: 1px;
+}
+
+/* Staggered animation for lights (more granular control) */
+/* Wires finish drawing around 0.5s (start) + 3s (duration) = 3.5s */
+/* Starting bulb animation after 3.6s to ensure wires are fully visible first */
+.garland-full-width .garland-light:nth-child(1) { animation-delay: 3.6s; } /* Left Top 1 */
+.garland-full-width .garland-light:nth-child(2) { animation-delay: 3.7s; } /* Left Top 2 */
+.garland-full-width .garland-light:nth-child(3) { animation-delay: 3.8s; } /* Left Top 3 */
+.garland-full-width .garland-light:nth-child(4) { animation-delay: 3.9s; } /* Left Top 4 */
+
+.garland-full-width .garland-light:nth-child(5) { animation-delay: 4.0s; } /* Left Bottom 1 */
+.garland-full-width .garland-light:nth-child(6) { animation-delay: 4.1s; } /* Left Bottom 2 */
+.garland-full-width .garland-light:nth-child(7) { animation-delay: 4.2s; } /* Left Bottom 3 */
+.garland-full-width .garland-light:nth-child(8) { animation-delay: 4.3s; } /* Left Bottom 4 */
+
+.garland-full-width .garland-light:nth-child(9) { animation-delay: 4.4s; } /* Right Top 1 */
+.garland-full-width .garland-light:nth-child(10) { animation-delay: 4.5s; } /* Right Top 2 */
+.garland-full-width .garland-light:nth-child(11) { animation-delay: 4.6s; } /* Right Top 3 */
+.garland-full-width .garland-light:nth-child(12) { animation-delay: 4.7s; } /* Right Top 4 */
+
+.garland-full-width .garland-light:nth-child(13) { animation-delay: 4.8s; } /* Right Bottom 1 */
+.garland-full-width .garland-light:nth-child(14) { animation-delay: 4.9s; } /* Right Bottom 2 */
+.garland-full-width .garland-light:nth-child(15) { animation-delay: 5.0s; } /* Right Bottom 3 */
+.garland-full-width .garland-light:nth-child(16) { animation-delay: 5.1s; } /* Right Bottom 4 */
+
+
+/* Keyframes for animations */
+/* Removed slideInFromLeft/Right as the SVG is now full-width and static in position */
+
+@keyframes drawLine {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes lightOn {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 1; transform: scale(1.1); } /* Slightly larger for a "pop" */
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes sway {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); } /* Subtle vertical movement */
+    100% { transform: translateY(0); }
+}
+
+
+/* Custom Buttons for Hero Section */
+.custom-btn-primary-outline-hero,
+.custom-btn-secondary-hero {
+    border-radius: 50px; /* Pill shape */
+    padding: 15px 35px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative; /* Ensure buttons are above overlay */
+    z-index: 1;
+}
+
+.custom-btn-primary-outline-hero {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+}
+
+.custom-btn-primary-outline-hero:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.custom-btn-secondary-hero {
+    background-color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+    color: white;
+}
+
+.custom-btn-secondary-hero:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Section Titles */
+.section-title {
+    font-size: 2.8rem; /* Larger font size */
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+    color: var(--primary-color); /* Section titles use primary color */
+    text-align: center; /* Centering the section title */
+    width: 100%; /* Ensure it takes full width to center */
+}
+
+.section-title span {
+    position: relative;
+    z-index: 1;
+    border-bottom: 3px solid var(--secondary-color); /* Underline uses secondary color */
+    padding-bottom: 0.5rem; /* Adjust padding to match underline */
+}
+
+.section-title::after {
+    content: none; /* Remove the old ::after underline */
+}
+
+
+/* Specialty Cards */
+.specialty-card {
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Ensures image rounded corners are respected */
+    border: 1px solid #eee; /* Add a subtle border */
+    background-color: #ffffff;
+}
+
+.specialty-card img {
+    height: 250px; /* Fixed height for consistent card size */
+    object-fit: cover;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.specialty-card:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25) !important; /* More pronounced shadow */
+}
+
+.specialty-card .card-title {
+    color: var(--primary-color); /* Card titles use primary color */
+    font-size: 1.6rem;
+    margin-top: 15px;
+    font-weight: 700; /* Make titles bold */
+}
+
+.specialty-card .card-text {
+    color: var(--text-dark);
+}
+
+
+/* Call to Action Section */
+.cta-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); /* Gradient background */
+    padding: 80px 0;
+    border-radius: 15px; /* Rounded corners for the section */
+    margin: 50px auto; /* Center with auto margins and add vertical space */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    max-width: 90%; /* Constrain width for better appearance */
+}
+
+.cta-section h2 {
+    color: white;
+    font-size: 3rem;
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+.cta-section .lead {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.4rem;
+}
+
+.custom-btn-cta {
+    background-color: var(--accent-color-yellow); /* Yellow accent button */
+    border: none;
+    color: var(--text-dark); /* Dark text for contrast on yellow */
+    font-weight: 700;
+    padding: 15px 40px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.custom-btn-cta:hover {
+    background-color: white;
+    color: var(--primary-color); /* Primary color text on white hover */
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+
+/* Testimonials Carousel */
+#testimonialCarousel {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.testimonial-item {
+    background-color: var(--bg-light); /* Light background */
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    min-height: 200px; /* Ensure consistent height */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--primary-color-darker); /* Subtle border */
+}
+
+.testimonial-item p {
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.testimonial-item h5 {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.carousel-indicators [data-bs-target] {
+    background-color: var(--primary-color);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: var(--secondary-color); /* Secondary color controls */
+    border-radius: 50%;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.carousel-control-prev-icon:hover,
+.carousel-control-next-icon:hover {
+    background-color: var(--primary-color); /* Primary on hover */
+}
+
+
+/* Write a Review Button */
+.custom-btn-secondary {
+    background-color: var(--secondary-color); /* Secondary color background */
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.custom-btn-secondary:hover {
+    background-color: var(--primary-color); /* Primary on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+/* General Custom Buttons (from other pages, ensure consistency) */
+.custom-btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 12px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.custom-btn-primary:hover {
+    background-color: var(--primary-color-darker); /* Slightly darker primary */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.custom-btn-primary-outline {
+    background-color: transparent;
+    border: 2px solid var(--primary-color); /* Primary color border */
+    color: var(--primary-color); /* Primary color text */
+    font-weight: 600;
+    padding: 12px 25px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.custom-btn-primary-outline:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Footer */
+footer {
+    background-color: var(--bg-dark); /* Dark footer */
+    color: var(--text-light);
+    padding: 30px 0;
+    font-size: 0.9rem;
+}
+footer p {
+  margin-bottom: 0;
+}
+footer a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+footer a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 3rem;
+    }
+    .hero-section .lead {
+        font-size: 1.2rem;
+    }
+    .section-title {
+        font-size: 2rem;
+    }
+    .cta-section h2 {
+        font-size: 2rem;
+    }
+    .cta-section .lead {
+        font-size: 1.1rem;
+    }
+    .custom-btn-primary-outline-hero,
+    .custom-btn-secondary-hero,
+    .custom-btn-cta,
+    .custom-btn-secondary {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+}
+
+/* Custom scrollbar for horizontal gallery */
+.custom-scroll-container {
+  /* Hide scrollbar for aesthetic purposes, but keep functionality */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.custom-scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+
+/* Gallery Item Hover Effect */
+.gallery-item {
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  cursor: pointer;
+  overflow: hidden; /* Ensure image zoom doesn't break card bounds */
+}
+
+.gallery-item img {
+  transition: transform 0.3s ease-in-out;
+  width: 100%;
+  height: 200px; /* Fixed height for consistency - adjust as needed */
+  object-fit: cover; /* Ensure images cover the area without distortion */
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px); /* Lift effect */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow */
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Responsive adjustments for column width in horizontal scroll */
+/* Adjust these values based on how many images you want visible at once */
+@media (min-width: 768px) {
+  .custom-scroll-container .col-md-4 {
+      flex: 0 0 30%; /* Show roughly 3 items on medium screens */
+      max-width: 30%;
+  }
+}
+
+@media (min-width: 992px) {
+  .custom-scroll-container .col-lg-3 {
+      flex: 0 0 22%; /* Show roughly 4 items on large screens */
+      max-width: 22%;
+  }
+}
+
+/* About Us Page Specific Styles (Improvements) */
+.section-wrapper-about-us p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+}
+.col-lg-6 .section-title + .lead {
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.list-unstyled li {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+  display: flex;
+  align-items: flex-start;
+  font-size: 1.05rem;
+  color: var(--text-dark);
+}
+.list-unstyled li i {
+  font-size: 1.4rem;
+  color: var(--primary-color); /* Icons use primary color */
+  margin-right: 0.8rem;
+  flex-shrink: 0;
+  margin-top: 0.15em;
+}
+.list-unstyled li strong {
+  color: var(--primary-color); /* Strong text uses primary color */
+  font-weight: 600;
+}
+.col-lg-6 h1.section-title span {
+  color: var(--primary-color);
+  border-bottom-color: var(--secondary-color);
+}
+.col-lg-6 h4.fw-semibold {
+  font-family: var(--font-headings);
+  color: var(--text-dark);
+  font-size: 1.75rem;
+}
+
+.team-member-card { /* This might be removed if team section is gone, but keeping for completeness */
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid #ddd;
+}
+.team-member-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-hover-shadow);
+  border-color: var(--secondary-color);
+}
+
+/* Contact Page */
+.contact-info-item h5 {
+  color: var(--primary-color); /* Contact info titles use primary color */
+  display: flex;
+  align-items: center;
+}
+.contact-info-item i {
+  font-size: 1.5rem;
+  color: var(--secondary-color); /* Contact info icons use secondary color */
+  margin-right: 0.5rem;
+}
+.contact-info-item p {
+  margin-left: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+.contact-info-item a {
+  text-decoration: none;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
+}
+.contact-info-item a:hover {
+  color: var(--primary-color);
+}
+
+/* Form Styling */
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.25rem rgba(var(--primary-color-rgb), 0.25);
+}
+.needs-validation .form-control:invalid {
+  border-color: var(--accent-color-red); /* Use a vibrant red for invalid fields */
+}
+.needs-validation .form-control:valid {
+  border-color: var(--accent-color-green); /* Use a vibrant green for valid fields */
+}
+
+/* Menu Page Specific Styles (New & Enhanced) */
+.menu-page-title-container {
+  background: linear-gradient(135deg, var(--primary-color-light), var(--primary-color));
+  color: white;
+  padding: 3rem 1.5rem;
+  margin-bottom: 2.5rem;
+  border-radius: 0.5rem;
+}
+.menu-page-title-container h1 {
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Card styling for menu categories */
+.menu-category-card {
+  border: 1px solid #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Softer shadow */
+}
+
+/* Header for menu cards (Traditional, Basic, Standard) */
+.menu-card-header-primary {
+  background-color: var(--primary-color-darker); /* Darker Primary for contrast */
+  color: white;
+  padding: 1rem;
+  font-size: 1.25rem;
+  border-bottom: 3px solid var(--secondary-color); /* Secondary color underline */
+}
+
+/* Header for menu cards (Silver, Gold) */
+.menu-card-header-secondary {
+  background-color: var(--secondary-color); /* Secondary color for contrast */
+  color: white;
+  padding: 1rem;
+  font-size: 1.25rem;
+  border-bottom: 3px solid var(--primary-color); /* Primary color underline */
+}
+
+
+.menu-item-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 0; /* Remove default ul margin */
+}
+.menu-item-list li {
+  font-size: 1.05rem; /* Slightly smaller for compactness */
+  color: var(--text-dark);
+  padding: 0.75rem 1rem; /* More padding */
+  border-bottom: 1px dashed #e0e0e0; /* Lighter separator */
+  transition: background-color 0.2s ease-in-out;
+  display: flex; /* For aligning item name and price/description */
+  justify-content: space-between; /* Pushes name to left, price/desc to right */
+  align-items: center;
+}
+.menu-item-list li:last-child {
+  border-bottom: none;
+}
+.menu-item-list li:hover {
+  background-color: #f5f5f5; /* Subtle hover */
+}
+
+/* New: Styles for menu item image within the list (if you add them) */
+.menu-item-list .item-content {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.menu-item-list .item-image {
+  width: 80px; /* Small thumbnail size */
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px; /* Slightly rounded corners */
+  margin-right: 15px;
+  flex-shrink: 0;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.menu-item-list .item-details {
+  flex-grow: 1;
+}
+
+.menu-item-list .item-name {
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 1.15rem;
+}
+
+.menu-item-list .item-description {
+  font-size: 0.95rem;
+  color: #6a747c; /* Lighter grey for description */
+  margin-top: 5px;
+  line-height: 1.4;
+}
+
+.menu-item-list .item-price {
+  font-weight: bold;
+  color: var(--secondary-color); /* Price uses secondary color */
+  font-size: 1.2rem;
+  margin-left: 20px; /* Space from description */
+  flex-shrink: 0; /* Prevent price from shrinking */
+}
+
+/* For multi-column menu items */
+.menu-item-columns {
+  column-count: 1; /* Default to 1 column */
+  column-gap: 30px; /* Space between columns */
+}
+
+@media (min-width: 768px) {
+  .menu-item-columns {
+      column-count: 2; /* Two columns on medium screens and up */
+  }
+}
+
+@media (min-width: 1200px) {
+  .menu-item-columns {
+      column-count: 3; /* Three columns on large screens and up */
+  }
+}
+
+/* Styles for Terms & Conditions list */
+.terms-list li {
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+}
+.terms-list li i {
+  font-size: 1.2rem;
+  color: var(--secondary-color); /* Icon color */
+  margin-right: 8px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}

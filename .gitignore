@@ -1,1 +1,23 @@
-firebase_service_account.json
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+*.env
+.vscode/ # Visual Studio Code settings
+
+# Flask specific
+instance/
+.flaskenv
+
+# Firebase Service Account Key (DO NOT UPLOAD THIS TO GITHUB)
+firebase_service_account.json # Or whatever your Firebase JSON file is named
+
+# MacOS
+.DS_Store
+
+# Vercel
+.vercel/
