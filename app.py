@@ -296,48 +296,59 @@ def about():
     return render_template('about.html', title='About Us - Sri Sai Venkateswara Caterers')
 
 # --- Add the submit_review route (endpoint name 'submit_review') ---
+   # app.py (excerpt - only showing the relevant part)
+
+   # ... (previous code) ...
+
 @app.route('/submit_review', methods=['GET', 'POST'])
 def submit_review():
-    print(f"DEBUG: submit_review route accessed. Method: {request.method}")
-    if request.method == 'POST':
-        reviewer_name = request.form.get('author') # 'author' is the name attribute in your HTML
-        review_quote = request.form.get('quote')   # 'quote' is the name attribute in your HTML
-        rating = request.form.get('rating')        # 'rating' is the name attribute in your HTML
+       print(f"DEBUG: submit_review route accessed. Method: {request.method}")
+       if request.method == 'POST':
+           reviewer_name = request.form.get('author')
+           review_quote = request.form.get('quote')
+           rating = request.form.get('rating')
 
-        print(f"DEBUG: Received data - Name: {reviewer_name}, Quote: {review_quote}, Rating: {rating}")
+           print(f"DEBUG: Received data - Name: {reviewer_name}, Quote: {review_quote}, Rating: {rating}")
 
-        if not reviewer_name or not review_quote:
-            print("ERROR: Name or review quote missing.")
-            return jsonify({'success': False, 'message': 'Your name and review are required.'}), 400
+           if not reviewer_name or not review_quote:
+               print("ERROR: Name or review quote missing.")
+               return jsonify({'success': False, 'message': 'Your name and review are required.'}), 400
 
-        try:
-            if db: # Ensure db is initialized from Firebase setup
-                # Convert rating to int, handle empty string if optional
-                try:
-                    rating_value = int(rating) if rating and rating.strip() else None
-                except ValueError:
-                    print(f"WARNING: Invalid rating value received: {rating}. Setting to None.")
-                    rating_value = None
+           try:
+               if db: # Ensure db is initialized from Firebase setup
+                   # Convert rating to int, handle empty string if optional
+                   try:
+                       rating_value = int(rating) if rating and rating.strip() else None
+                   except ValueError:
+                       print(f"WARNING: Invalid rating value received: {rating}. Setting to None.")
+                       rating_value = None
 
-                doc_ref = db.collection('reviews').add({
-                    'author': reviewer_name,
-                    'quote': review_quote,
-                    'rating': rating_value,
-                    'approved': False, # Reviews should probably be approved by an admin before showing on homepage
-                    'timestamp': firestore.SERVER_TIMESTAMP
-                })
-                print(f"DEBUG: Review saved to Firestore with ID: {doc_ref[1].id}")
-                return jsonify({'success': True, 'message': 'Thank you for your review!'}), 200
-            else:
-                print("ERROR: Firestore database client not initialized. Cannot save review.")
-                return jsonify({'success': False, 'message': 'Database not available. Cannot save review. Please contact support.'}), 500
-        except Exception as e:
-            print(f"EXCEPTION: Error saving review to Firestore: {e}")
-            # This will show the actual Python exception in the browser console as well
-            return jsonify({'success': False, 'message': f'An unexpected error occurred: {str(e)}'}), 500
-    
-    # For GET request, just render the form
-    return render_template('submit_review.html', title='Submit Your Review - Sri Sai Venkateswara Caterers')
+                   doc_ref = db.collection('reviews').add({
+                       'author': reviewer_name,
+                       'quote': review_quote,
+                       'rating': rating_value,
+                       'approved': False, # Reviews should probably be approved by an admin before showing on homepage
+                       'timestamp': firestore.SERVER_TIMESTAMP
+                   })
+                   print(f"DEBUG: Review saved to Firestore with ID: {doc_ref[1].id}")
+                   return jsonify({'success': True, 'message': 'Thank you for your review!'}), 200
+               else:
+                   # This means Firebase did not initialize.
+                   print("ERROR: Firestore database client not initialized. Cannot save review.")
+                   return jsonify({'success': False, 'message': 'Database not available. Cannot save review. Please contact support.'}), 500
+           except Exception as e:
+               # --- IMPORTANT CHANGE HERE ---
+               import traceback
+               print(f"EXCEPTION: Error saving review to Firestore: {e}")
+               print("TRACEBACK:")
+               traceback.print_exc() # This will print the full traceback to the console/logs
+               # --- END IMPORTANT CHANGE ---
+               return jsonify({'success': False, 'message': f'An unexpected error occurred: {str(e)}'}), 500
+       
+       # For GET request, just render the form
+       return render_template('submit_review.html', title='Submit Your Review - Sri Sai Venkateswara Caterers')
+   
+   
 
 @app.route('/privacy-policy')
 def privacy_policy_page():
