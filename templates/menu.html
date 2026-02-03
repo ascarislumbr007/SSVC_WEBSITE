@@ -1,6 +1,10 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<script>
+    posthog.capture("menu_viewed");
+</script>
+  
 <div class="menu-page-title-container mt-4">
     <div class="container text-center" data-aos="fade-up">
         <h1 class="display-4 fw-bold"><span>Our Vegetarian Delicacies</span></h1>

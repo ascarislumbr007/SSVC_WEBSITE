@@ -1,6 +1,15 @@
 {% extends "layout.html" %}
 
 {% block content %}
+<script>
+    document.getElementById("bookingForm").addEventListener("submit", function () {
+      posthog.capture("booking_submitted", {
+        event_type: document.getElementById("eventType").value,
+        guests: document.getElementById("guestCount").value
+      });
+    });
+</script>
+  
 <section class="py-5 mt-5">
     <div class="container">
         <div class="text-center mb-5" data-aos="fade-up">
